@@ -90,25 +90,24 @@ func executeCheck(event *types.Event) (int, error) {
 
 	res, err := http.Get(plugin.Url + "/api/v2/incidents/unresolved.json")
 	if err != nil {
-		panic(err)
+		return sensu.CheckStateCritical, err
 	}
 	defer res.Body.Close()
 
 	decoder := json.NewDecoder(res.Body)
 	err = decoder.Decode(&currentStatus)
 	if err != nil {
-		fmt.Printf("%T\n%s\n%#v\n", err, err, err)
+		return sensu.CheckStateCritical, err
 	}
 
 	if len(currentStatus.Incidents) > 0 {
 		for _, s := range currentStatus.Incidents {
 			incidentSummary += strings.ToUpper(s.Impact) + ": " + s.Name + " (" + s.Shortlink + ") " + strings.ToUpper(s.Status) + "\n"
 		}
-		//fmt.Println(incidentSummary)
-		return sensu.CheckStateCritical, fmt.Errorf("%v: Incidents: %v, Updated at: %v \n%v", currentStatus.Page.Name, len(currentStatus.Incidents), currentStatus.Page.UpdatedAt, incidentSummary)
+		fmt.Printf("%v: Incidents: %v, Updated at: %v \n%v", currentStatus.Page.Name, len(currentStatus.Incidents), currentStatus.Page.UpdatedAt, incidentSummary)
+		return sensu.CheckStateCritical, nil
 	} else {
 		fmt.Printf("%v: Incidents: %v, Updated at: %v\n", currentStatus.Page.Name, len(currentStatus.Incidents), currentStatus.Page.UpdatedAt)
 		return sensu.CheckStateOK, nil
 	}
-	return sensu.CheckStateOK, nil
 }
