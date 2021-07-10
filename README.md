@@ -1,25 +1,5 @@
 [![Sensu Bonsai Asset](https://img.shields.io/badge/Bonsai-Download%20Me-brightgreen.svg?colorB=89C967&logo=sensu)](https://bonsai.sensu.io/assets/DoctorOgg/sensu-check-statuspage)
-![Go Test](https://github.com/DoctorOgg/sensu-check-statuspage/workflows/Go%20Test/badge.svg)
 ![goreleaser](https://github.com/DoctorOgg/sensu-check-statuspage/workflows/goreleaser/badge.svg)
-
-# Check Plugin Template
-
-## Overview
-check-plugin-template is a template repository which wraps the [Sensu Plugin SDK][2].
-To use this project as a template, click the "Use this template" button from the main project page.
-Once the repository is created from this template, you can use the [Sensu Plugin Tool][9] to
-populate the templated fields with the proper values.
-
-## Functionality
-
-After successfully creating a project from this template, update the `Config` struct with any
-configuration options for the plugin, map those values as plugin options in the variable `options`,
-and customize the `checkArgs` and `executeCheck` functions in [main.go][7].
-
-When writing or updating a plugin's README from this template, review the Sensu Community
-[plugin README style guide][3] for content suggestions and guidance. Remove everything
-prior to `# sensu-check-statuspage` from the generated README file, and add additional context about the
-plugin per the style guide.
 
 ## Releases with Github Actions
 
@@ -44,11 +24,28 @@ the plugin with goreleaser. Register the asset with [Bonsai][8] to share it with
 
 ## Overview
 
-The sensu-check-statuspage is a [Sensu Check][6] that ...
+The sensu-check-statuspage is a [Sensu Check][6] that will check a status page hosted by [Atlassian Statuspage](https://www.atlassian.com/software/statuspage). Specificlly this plugin reads from ```/api/v2/incidents/unresolved.json``` and reports if the Incident count is greater than 0.
+
 
 ## Files
 
+* sensu-check-statuspage
+
 ## Usage examples
+
+```bash
+sensu-check-statuspage -u https://status.bunnycdn.com
+
+bunny.net: Incidents: 0, Updated at: 2021-06-23 07:25:05.383 +0000 UTC
+```
+
+```bash
+sensu-check-statuspage -u https://status.ucdavis.edu
+
+UC Davis: Incidents: 2, Updated at: 2021-07-10 08:30:33.455 -0700 PDT
+MAJOR: Voice Service Degradation: Jabber clients for VOIP (https://stspg.io/mk26h5mgpxyf) IDENTIFIED
+MINOR: ServiceNow Degradation (https://stspg.io/csf4p3923xwr) INVESTIGATING
+```
 
 ## Configuration
 
@@ -74,7 +71,7 @@ metadata:
   name: sensu-check-statuspage
   namespace: default
 spec:
-  command: sensu-check-statuspage --example example_arg
+  command: sensu-check-statuspage --url https://status.example.com
   subscriptions:
   - system
   runtime_assets:
@@ -93,14 +90,7 @@ From the local path of the sensu-check-statuspage repository:
 go build
 ```
 
-## Additional notes
 
-## Contributing
-
-For more information about contributing to this plugin, see [Contributing][1].
-
-[1]: https://github.com/sensu/sensu-go/blob/master/CONTRIBUTING.md
-[2]: https://github.com/sensu-community/sensu-plugin-sdk
 [3]: https://github.com/sensu-plugins/community/blob/master/PLUGIN_STYLEGUIDE.md
 [4]: https://github.com/sensu-community/check-plugin-template/blob/master/.github/workflows/release.yml
 [5]: https://github.com/sensu-community/check-plugin-template/actions
