@@ -83,9 +83,7 @@ func checkArgs(event *types.Event) (int, error) {
 }
 
 func executeCheck(event *types.Event) (int, error) {
-	//log.Println("executing check with --url", plugin.Url)
 	var incidentSummary string
-	//url := "https://status.bunnycdn.com/api/v2/incidents/unresolved.json"
 	var currentStatus StatusPage
 
 	res, err := http.Get(plugin.Url + "/api/v2/incidents/unresolved.json")
