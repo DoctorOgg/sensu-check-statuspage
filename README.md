@@ -11,8 +11,6 @@
   - [Asset registration](#asset-registration)
   - [Check definition](#check-definition)
 - [Installation from source](#installation-from-source)
-- [Additional notes](#additional-notes)
-- [Contributing](#contributing)
 
 ## Overview
 
